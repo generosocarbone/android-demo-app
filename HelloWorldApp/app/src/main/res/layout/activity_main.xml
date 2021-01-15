@@ -20,4 +20,13 @@
         android:background="#80000000"
         android:textColor="@android:color/white" />
 
+    <TextView
+        android:id="@+id/metadata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        android:layout_gravity="bottom"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
 </FrameLayout>
