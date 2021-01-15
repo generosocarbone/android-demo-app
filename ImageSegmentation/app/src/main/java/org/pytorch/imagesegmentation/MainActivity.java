@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements Runnable {
     private ImageView mImageView;
@@ -57,6 +58,22 @@ public class MainActivity extends AppCompatActivity implements Runnable {
         }
     }
 
+    /// le immagini non quadrate lo rompono. Perché va in index-out-of-bounds?
+    String[] images = new String[]{
+            "deeplab.jpg",
+            "dog.jpg",
+            "colibri.jpg", /// rotto
+            "gatto.jpg", /// rotto
+            "image.jpg",
+            "cane.jpg", //rotto
+            "cane_2.jpg", //rotto
+            "cane_400x400.jpg",
+            "cane_2_400x400.jpg",
+            "gatto_400x400.jpg",
+    };
+
+    int count = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +92,10 @@ public class MainActivity extends AppCompatActivity implements Runnable {
         final Button buttonRestart = findViewById(R.id.restartButton);
         buttonRestart.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (mImagename == "deeplab.jpg")
-                    mImagename = "dog.jpg";
-                else
-                    mImagename = "deeplab.jpg";
+                int index = (count + 1)  % images.length;
+                mImagename = images[index];
+                count = count + 1;
+
                 try {
                     mBitmap = BitmapFactory.decodeStream(getAssets().open(mImagename));
                     mImageView.setImageBitmap(mBitmap);

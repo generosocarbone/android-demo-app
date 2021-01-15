@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Pytorch Hello World</string>
     <string name="no_module_error">No module found!!! Cannot classificate image</string>
+    <string name="no_tensor_error">Cannot create bitmap tensor</string>
+    <string name="forward_error">Cannot forward module</string>
 </resources>

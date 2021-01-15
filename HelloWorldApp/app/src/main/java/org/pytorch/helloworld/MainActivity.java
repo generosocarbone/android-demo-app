@@ -50,11 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     module = null;
-    String name = "colibri.jpg";
-    try {
-      // creating bitmap from packaged into app android asset 'image.jpg',
-      // app/src/main/assets/image.jpg
 
+    try {
       // loading serialized torchscript module from packaged into app android asset model.pt,
       // app/src/model/assets/model.pt
       module = Module.load(assetFilePath(this, "model.pt"));
@@ -92,50 +89,69 @@ public class MainActivity extends AppCompatActivity {
     if (module == null || bitmap == null)
       return;
 
+    Log.d(TAG, "classificateImage: setting bitmap");
     try {
       imageView.setImageBitmap(bitmap);
     } catch (Exception e) {
       Log.e(TAG, String.format("Cannot display image. Classification still in progress: %s", imageName), e);
       Toast.makeText(this, "Cannot display image. Classification still in progress",Toast.LENGTH_LONG).show();
     }
+    Log.d(TAG, "classificateImage: bitmap set");
 
     long start = Calendar.getInstance().getTimeInMillis();
-    final Tensor inputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap,
-            TensorImageUtils.TORCHVISION_NORM_MEAN_RGB, TensorImageUtils.TORCHVISION_NORM_STD_RGB);
-
+    final Tensor inputTensor;
+    try {
+      inputTensor = TensorImageUtils.bitmapToFloat32Tensor(bitmap,
+              TensorImageUtils.TORCHVISION_NORM_MEAN_RGB, TensorImageUtils.TORCHVISION_NORM_STD_RGB);
+    } catch (Exception e){
+      metadata.setText(R.string.no_tensor_error);
+      Log.e(TAG, String.valueOf(R.string.no_tensor_error), e);
+      return;
+    }
     // running the model
-    final Tensor outputTensor = module.forward(IValue.from(inputTensor)).toTensor();
-
-    // getting tensor content as java array of floats
-    final float[] scores = outputTensor.getDataAsFloatArray();
-    long end = Calendar.getInstance().getTimeInMillis();
-    // searching for the index with maximum score
-    float maxScore = -Float.MAX_VALUE;
-    int maxScoreIdx = -1;
-    for (int i = 0; i < scores.length; i++) {
-      if (scores[i] > maxScore) {
-        maxScore = scores[i];
-        maxScoreIdx = i;
-      }
+    final Tensor outputTensor;
+    try {
+      outputTensor = module.forward(IValue.from(inputTensor)).toTensor();
+    } catch (Exception e) {
+      metadata.setText(R.string.forward_error);
+      Log.e(TAG, String.valueOf(R.string.forward_error), e);
+      return;
     }
 
-    String className = ImageNetClasses.IMAGENET_CLASSES[maxScoreIdx];
-    textView.setText(className);
+    try {
+      // getting tensor content as java array of floats
+      final float[] scores = outputTensor.getDataAsFloatArray();
+      long end = Calendar.getInstance().getTimeInMillis();
+      // searching for the index with maximum score
+      float maxScore = -Float.MAX_VALUE;
+      int maxScoreIdx = -1;
+      for (int i = 0; i < scores.length; i++) {
+        if (scores[i] > maxScore) {
+          maxScore = scores[i];
+          maxScoreIdx = i;
+        }
+      }
 
-    metadata = findViewById(R.id.metadata);
-    metadata.setText(
-            String.format(
-                    Locale.ITALIAN,
-                    "Image: %s\nTime: %dms\n%dx%d; %.02fMB; Score: %.02f: Class: %d",
-                    imageName,
-                    end - start,
-                    bitmap.getWidth(),
-                    bitmap.getHeight(),
-                    (float)(bitmap.getByteCount() / 1024) / 1024,
-                    maxScore,
-                    maxScoreIdx
-            )
-    );
+      String className = ImageNetClasses.IMAGENET_CLASSES[maxScoreIdx];
+      textView.setText(className);
+
+      metadata = findViewById(R.id.metadata);
+      metadata.setText(
+              String.format(
+                      Locale.ITALIAN,
+                      "Image: %s\nTime: %dms\n%dx%d; %.02fMB; Score: %.02f: Class: %d",
+                      imageName,
+                      end - start,
+                      bitmap.getWidth(),
+                      bitmap.getHeight(),
+                      (float) (bitmap.getByteCount() / 1024) / 1024,
+                      maxScore,
+                      maxScoreIdx
+              )
+      );
+    } catch (Exception e) {
+      Log.e(TAG, "classificateImage: eh, " + e.toString(), e);
+    }
   }
 
 
@@ -162,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
       index = (index + 1) % assets.length;
 
-      handler.postDelayed(this, 5000);
+      handler.postDelayed(this, 2000);
     }
   };
 
