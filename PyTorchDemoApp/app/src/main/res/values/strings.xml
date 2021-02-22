@@ -24,6 +24,12 @@
     <string name="vision_card_qmobilenet_title">Image Classification\nQuantized MobileNetV2</string>
     <string name="vision_card_qmobilenet_description">Inference in int8.\nInput is float32 tensor of 1x3x224x224 shape</string>
 
+    <string name="vision_card_mariellonet_title">Image Classification\nMariellonet</string>
+    <string name="vision_card_mariellonet_description">Pretrained Mariellonet model recognition_model.pt</string>
+
+    <string name="vision_card_mariellyolo_title">Detection models\nMariellonet Yolo</string>
+    <string name="vision_card_mariellyolo_description">yolo_v5_tolfa.torchscript.pt</string>
+
     <string name="vision_card_resnet_title">Image Classification\nResnet18</string>
     <string name="vision_card_resnet_description">Default TorchVision pretrained Resnet18 model. Input is float32 tensor of 1x3x224x224 shape</string>
 

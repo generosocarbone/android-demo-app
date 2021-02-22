@@ -27,6 +27,20 @@ public class VisionListActivity extends AbstractListActivity {
           InfoViewFactory.INFO_VIEW_TYPE_IMAGE_CLASSIFICATION_RESNET);
       startActivity(intent);
     });
+    findViewById(R.id.mariellonet_click_area).setOnClickListener(v -> {
+      final Intent intent = new Intent(VisionListActivity.this, ImageClassificationActivity.class);
+      intent.putExtra(ImageClassificationActivity.INTENT_MODULE_ASSET_NAME, "recognition_model.pt");
+      intent.putExtra(ImageClassificationActivity.INTENT_INFO_VIEW_TYPE,
+          InfoViewFactory.INFO_VIEW_TYPE_IMAGE_CLASSIFICATION_RESNET);
+      startActivity(intent);
+    });
+    findViewById(R.id.mariellyolo_click_area).setOnClickListener(v -> {
+      final Intent intent = new Intent(VisionListActivity.this, ImageClassificationActivity.class);
+      intent.putExtra(ImageClassificationActivity.INTENT_MODULE_ASSET_NAME, "yolo_v5_tolfa.torchscript.pt");
+      intent.putExtra(ImageClassificationActivity.INTENT_INFO_VIEW_TYPE,
+          InfoViewFactory.INFO_VIEW_TYPE_IMAGE_CLASSIFICATION_RESNET);
+      startActivity(intent);
+    });
   }
 
   @Override

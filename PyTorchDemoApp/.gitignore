@@ -5,3 +5,5 @@ local.properties
 .idea/
 .externalNativeBuild
 build
+/app/src/main/assets/recognition_model.pt
+/app/src/main/assets/yolo_v5_tolfa.torchscript.pt

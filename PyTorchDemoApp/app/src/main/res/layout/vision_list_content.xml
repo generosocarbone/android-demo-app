@@ -33,4 +33,24 @@
         app:descriptionRes="@string/vision_card_resnet_description"
         app:imageRes="@drawable/ic_image_classification_s"
         app:titleRes="@string/vision_card_resnet_title" />
+
+    <org.pytorch.demo.ListCardView
+        android:id="@+id/mariellonet_click_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/list_content_margin"
+        android:elevation="1dp"
+        app:descriptionRes="@string/vision_card_mariellonet_description"
+        app:imageRes="@drawable/ic_image_classification_s"
+        app:titleRes="@string/vision_card_mariellonet_title" />
+
+    <org.pytorch.demo.ListCardView
+        android:id="@+id/mariellyolo_click_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/list_content_margin"
+        android:elevation="1dp"
+        app:descriptionRes="@string/vision_card_mariellyolo_description"
+        app:imageRes="@drawable/ic_image_classification_s"
+        app:titleRes="@string/vision_card_mariellyolo_title" />
 </LinearLayout>
